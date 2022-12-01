@@ -23,8 +23,8 @@ app.post('/api', (req, res) => {
 
  res.json({
   status: "success",
-  test: "test",
-  name: data.name
+  name: data.name,
+  age: data.age
  });
 
 });
@@ -33,62 +33,32 @@ app.get('/', (req, res) => {
  res.render('index', {title: 'Forside'});
 });
 
-// let students = document.getElementById("students");
+
 
 app.get('/myapi', (req, res) => {
  res.render('myapi', {title: 'myapi'});
 });
 
-// app.get('/students', (req, res) => {
-//  res.render('students', {title: 'students'});
-// });
-
-//  app.get('/students', (req, res) => {
-
-//   console.log("I sent a response!!");
-//   // console.log(res.json(data));
-
-//   // res.json(data);
-
- 
-
-// //  jsonReader("./db.json", (err, db) => {
-// //    if (err) {
-// //      console.log(err);
-// //      return;
-// //    };
-
-
-// //    // students.innerHTML = "";
-// //    for (let i = 0; i < db.students.length; i++) {
-    
-// //     // students.innerHTML = db.students[i].name;
-// //     console.log(db.students[i].name);
-// //    };
-
-// //    // console.log(db.students[0].name);
-   
-// //  });
-
-// //  res.render('myapi', {title: 'API'});
-
-// });
-
-// function jsonReader(filePath, cb) {
-//  console.log("Reader is running");
-//  fs.readFile(filePath, (err, fileData) => {
-//   console.log(filePath);
-//    if (err) {
-//      return cb && cb(err);
-//    }
-//    try {
-//     console.log(fileData);
-//      const object = JSON.parse(fileData);
-//      return cb && cb(null, object);
-//    } catch (err) {
-//      return cb && cb(err);
-//    }
- // });
-// };
-
+//Læs direkte fra db.json:
+function jsonReader(filePath, cb) {
+ fs.readFile(filePath, (err, fileData) => {
+   if (err) {
+     return cb && cb(err);
+   }
+   try {
+     const object = JSON.parse(fileData);
+     return cb && cb(null, object);
+   } catch (err) {
+     return cb && cb(err);
+   }
+ });
+}
+jsonReader("./db.json", (err, students) => {
+ if (err) {
+   console.log(err);
+   return;
+ };
+ console.log("test");
+ console.log(students);
+});
 
