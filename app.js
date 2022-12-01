@@ -33,13 +33,21 @@ app.get('/', (req, res) => {
  res.render('index', {title: 'Forside'});
 });
 
-
-
 app.get('/myapi', (req, res) => {
  res.render('myapi', {title: 'myapi'});
 });
 
 //Læs direkte fra db.json:
+
+jsonReader("./db.json", (err, students) => {
+ if (err) {
+   console.log(err);
+   return;
+ };
+ console.log("test");
+ console.log(students);
+});
+
 function jsonReader(filePath, cb) {
  fs.readFile(filePath, (err, fileData) => {
    if (err) {
@@ -52,13 +60,4 @@ function jsonReader(filePath, cb) {
      return cb && cb(err);
    }
  });
-}
-jsonReader("./db.json", (err, students) => {
- if (err) {
-   console.log(err);
-   return;
- };
- console.log("test");
- console.log(students);
-});
-
+};
