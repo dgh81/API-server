@@ -5,8 +5,10 @@ const express = require('express');
 const app = express();
 
 const jsonServer = require('json-server');
+// const JSONdatabase = require('./students.json');
 
 const fs = require("fs");
+const { json } = require('express');
 
 app.set('view engine', 'ejs');
 app.listen(3000, () => console.log("lytter på port 3000"));
@@ -44,27 +46,68 @@ app.get('/form', (req, res) => {
 
 app.post('/formPost', (req, res) => {
  console.log("I got a request from formPost!!"); 
- console.log("req", req.body);
+ // console.log("req", req.body);
  
- // const data = req.body;
+ const student = req.body;
 
- // res.json({
- //  status: "success",
- //  name: data.name,
- //  age: data.age
- // });
+ res.json({
+  // status: "success",
+  id: student.id,
+  name: student.name,
+  age: student.age
+ });
+
+ const jsonString = JSON.stringify(student);
+ // console.log("my jsonString:", jsonString);
+
+ // Students er allerede parsed af Readeren:
+ jsonReader("./students.json", (err, students) => {
+  if (err) {
+    console.log(err);
+    return;
+  };
+  
+  // console.log("student:", student);
+  // console.log("students:", students);
+
+  students['students'].push(student);
+
+  let jsonStringStudents = JSON.stringify(students);
+
+  console.log("my jsonStringStudents:", jsonStringStudents);
+  // fs.writeFile('./allStudents.json', jsonStringStudents, err => {
+  fs.writeFile('./students.json', jsonStringStudents, err => {
+   if (err) {
+       console.log('Error writing file', err);
+   } else {
+       console.log('Successfully wrote file');
+   };
+
+ });
+
+
+
+
+ // fs.writeFile('./newStudent.json', jsonString, err => {
+ //  if (err) {
+ //      console.log('Error writing file', err);
+ //  } else {
+ //      console.log('Successfully wrote file');
+ //  };
+
+});
 });
 
 //Læs direkte fra db.json:
 
-jsonReader("./db.json", (err, students) => {
- if (err) {
-   console.log(err);
-   return;
- };
- console.log("test");
- console.log(students);
-});
+// jsonReader("./db.json", (err, students) => {
+//  if (err) {
+//    console.log(err);
+//    return;
+//  };
+//  console.log("test");
+//  console.log(students);
+// });
 
 function jsonReader(filePath, cb) {
  fs.readFile(filePath, (err, fileData) => {
