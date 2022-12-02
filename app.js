@@ -13,6 +13,7 @@ app.set('view engine', 'ejs');
 app.listen(3000, () => console.log("lytter på port 3000"));
 app.use(express.static('public'));
 app.use(express.json({limit: '1mb'}));
+app.use(express.urlencoded());
 
 app.post('/api', (req, res) => {
  
@@ -35,6 +36,23 @@ app.get('/', (req, res) => {
 
 app.get('/myapi', (req, res) => {
  res.render('myapi', {title: 'myapi'});
+});
+
+app.get('/form', (req, res) => {
+ res.render('form', {title: 'form'});
+});
+
+app.post('/formPost', (req, res) => {
+ console.log("I got a request from formPost!!"); 
+ console.log("req", req.body);
+ 
+ // const data = req.body;
+
+ // res.json({
+ //  status: "success",
+ //  name: data.name,
+ //  age: data.age
+ // });
 });
 
 //Læs direkte fra db.json:
