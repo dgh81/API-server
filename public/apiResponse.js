@@ -14,4 +14,4 @@ async function getapi(url) {
 
 };
 
-getapi(api_url);
+getapi(api_url).then();
