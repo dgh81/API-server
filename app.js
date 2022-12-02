@@ -8,13 +8,13 @@ const jsonServer = require('json-server');
 
 const fs = require("fs");
 
-
 app.set('view engine', 'ejs');
 app.listen(3000, () => console.log("lytter på port 3000"));
 app.use(express.static('public'));
 app.use(express.json({limit: '1mb'}));
 app.use(express.urlencoded());
 
+// Denne post API kører kun 1 gang når index loaded:
 app.post('/api', (req, res) => {
  
  console.log("I got a request!!"); 
