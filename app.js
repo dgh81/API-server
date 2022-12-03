@@ -45,69 +45,45 @@ app.get('/form', (req, res) => {
 });
 
 app.post('/formPost', (req, res) => {
- console.log("I got a request from formPost!!"); 
- // console.log("req", req.body);
- 
+
+ console.log("I got a request from /formPost!!"); 
+
+ // Brug req.body hvis alle felter i form repræsenterer objektet der skal gemmes:
  const student = req.body;
 
- res.json({
+ // Brug specifikke felter fra form, som repræsenterer objektet der skal gemmes:
+ const newStudent = res.json({
   // status: "success",
   id: student.id,
   name: student.name,
   age: student.age
  });
 
- const jsonString = JSON.stringify(student);
- // console.log("my jsonString:", jsonString);
-
  // Students er allerede parsed af Readeren:
  jsonReader("./students.json", (err, students) => {
+  
   if (err) {
     console.log(err);
     return;
   };
   
-  // console.log("student:", student);
-  // console.log("students:", students);
-
-  students['students'].push(student);
+  students['students'].push(newStudent);
 
   let jsonStringStudents = JSON.stringify(students);
 
   console.log("my jsonStringStudents:", jsonStringStudents);
-  // fs.writeFile('./allStudents.json', jsonStringStudents, err => {
+ 
   fs.writeFile('./students.json', jsonStringStudents, err => {
    if (err) {
        console.log('Error writing file', err);
    } else {
        console.log('Successfully wrote file');
    };
-
- });
-
-
-
-
- // fs.writeFile('./newStudent.json', jsonString, err => {
- //  if (err) {
- //      console.log('Error writing file', err);
- //  } else {
- //      console.log('Successfully wrote file');
- //  };
+  });
 
 });
+
 });
-
-//Læs direkte fra db.json:
-
-// jsonReader("./db.json", (err, students) => {
-//  if (err) {
-//    console.log(err);
-//    return;
-//  };
-//  console.log("test");
-//  console.log(students);
-// });
 
 function jsonReader(filePath, cb) {
  fs.readFile(filePath, (err, fileData) => {
@@ -122,3 +98,24 @@ function jsonReader(filePath, cb) {
    }
  });
 };
+ 
+ // --------------------------------FS READ / WRITE JSON ----------------------------
+ // Skriv til json-fil:
+ // fs.writeFile('./newStudent.json', jsonString, err => {
+ //  if (err) {
+ //      console.log('Error writing file', err);
+ //  } else {
+ //      console.log('Successfully wrote file');
+ //  };
+
+//Læs fra json-fil:
+
+// jsonReader("./db.json", (err, students) => {
+//  if (err) {
+//    console.log(err);
+//    return;
+//  };
+//  console.log("test");
+//  console.log(students);
+// });
+// ---------------------------------------------------------------------------------
