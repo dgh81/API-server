@@ -52,12 +52,11 @@ app.post('/formPost', (req, res) => {
  const student = req.body;
 
  // Brug specifikke felter fra form, som repræsenterer objektet der skal gemmes:
- const newStudent = res.json({
-  // status: "success",
+ const newStudent = {
   id: student.id,
   name: student.name,
   age: student.age
- });
+ };
 
  // Students er allerede parsed af Readeren:
  jsonReader("./students.json", (err, students) => {
