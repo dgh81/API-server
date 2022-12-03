@@ -18,12 +18,13 @@ app.use(express.urlencoded());
 
 // Denne post API kører kun 1 gang når index loaded:
 app.post('/api', (req, res) => {
- 
+ // Print til server konsol:
  console.log("I got a request!!"); 
  console.log("req", req.body);
  
  const data = req.body;
 
+ // Denne bliver autoprintet i frontend-konsollen på siden /index: 
  res.json({
   status: "success",
   name: data.name,
@@ -48,30 +49,49 @@ app.post('/formPost', (req, res) => {
 
  console.log("I got a request from /formPost!!"); 
 
- // Brug req.body hvis alle felter i form repræsenterer objektet der skal gemmes:
- const student = req.body;
 
- // Brug specifikke felter fra form, som repræsenterer objektet der skal gemmes:
- const newStudent = {
-  id: student.id,
-  name: student.name,
-  age: student.age
- };
 
- // Students er allerede parsed af Readeren:
+ // Students er allerede parsed af Readeren. Students er et javascript objekt:
  jsonReader("./students.json", (err, students) => {
   
   if (err) {
     console.log(err);
     return;
   };
+
+  // Tilgå variable/properties i javascript objektet:
+  console.log("students.students[0].age",students.students[0].age);
+  console.log("antal", students.students.length);
+
+  // Sæt nyt ID til næste ID i rækken:
+  let newID = students.students.length
+
+  // Byg ny student:
+  // Brug req.body hvis alle felter i form repræsenterer objektet der skal gemmes:
+  const student = req.body;
+
+  // Brug specifikke navngivne felter fra form, som repræsenterer objektet der skal gemmes:
+  // Det er muligt at redigere, slette, tilføje felter her. Fx er ID beregnet her og ikke sat i et form-felt:
+  const newStudent = {
+   // id: student.id,
+   id: newID,
+   name: student.name,
+   age: student.age
+  };
+
+  // Vis students objektet i frontend konsollen:
+  res.json({
+   students
+  });
   
+  // Tilføj newStudent til students:
   students['students'].push(newStudent);
 
+  // Konverter javascript objekt tilbage til json string inden der skrives til json filen:
   let jsonStringStudents = JSON.stringify(students);
 
   console.log("my jsonStringStudents:", jsonStringStudents);
- 
+
   fs.writeFile('./students.json', jsonStringStudents, err => {
    if (err) {
        console.log('Error writing file', err);
@@ -80,9 +100,18 @@ app.post('/formPost', (req, res) => {
    };
   });
 
-});
+ });
 
 });
+
+// Denne bliver autoprintet i frontend-konsollen på siden /form:
+// HUSK at man ikke kan have 2 res.json i samme "loop" - derfor er denne udkommenteret (se linje 82):
+// res.json({
+//  status: "success",
+//  id: newStudent.id,
+//  name: newStudent.name,
+//  age: newStudent.age
+// });
 
 function jsonReader(filePath, cb) {
  fs.readFile(filePath, (err, fileData) => {
