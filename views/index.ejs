@@ -8,35 +8,6 @@
 </head>
 <body>
  <h1>TITLE</h1>
-
- <!-- Fjern alt dette som autokøres 1 gang på index, når de andre GET og POST funktioner virker -->
- <script>
-  
-  async function postData() {
-  // https://developer.mozilla.org/en-US/docs/web/api/fetch_API/using_fetch
-  data = {
-   name:'daniel',
-   age: 41
-  };
-  
-  const options = {
-   method: 'POST',
-   headers: {
-      'Content-Type': 'application/json'
-    },
-   body: JSON.stringify(data)
-  };
-  
-  // fetch('api');
-  const res = await fetch('api', options);
-  const dataResponse = await res.json();
-  console.log(dataResponse);
-
- };
-
- postData().then();
-
- </script>
-
 </body>
+<script src="./index.js"></script>
 </html>

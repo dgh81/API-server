@@ -10,7 +10,7 @@
 
  <!-- <form action="/some page" id="form" method="post"> -->
   <form id="myForm">  
-   <label>Id:<input id="id" name="id" value="2"></label>
+   <!-- <label>Id:<input id="id" name="id" value="2"></label> -->
    <label>Name:<input id="name" name="name" value="John Doe"></label>
    <label>Age:<input id="age" name="age" value="22"></label>
    <input type="submit" value="Submit">
@@ -37,22 +37,12 @@ document.getElementById("myForm").addEventListener("submit", function (e) {
    body: JSON.stringify(data)
   };
   
-  // fetch('formPost');
+  // POST form data til frontend-konsollen på siden /form;
   const res = await fetch('formPost', options);
   const dataResponse = await res.json();
   
   console.log("dataResponse: ", dataResponse);
  };
-
-//   function getData(form) {
-//   var formData = new FormData(form);
-
-//   for (var pair of formData.entries()) {
-//     console.log(pair[0] + ": " + pair[1]);
-//   }
-
-//   console.log(Object.fromEntries(formData));
-// }
 
 </script>
 </body>
