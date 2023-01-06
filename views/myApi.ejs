@@ -17,13 +17,19 @@
  <div id="students"></div>
 
  <% studentsData.forEach(student => { %>
-  <p>
+  <p>id: 
    <%= student.id %>
   </p>
-  <p>
-   <%= student.name %>
+  <p>firstname: 
+   <%= student.firstname %>
   </p>
-  <p>
+  <p>middlename: 
+   <%= student.middlename %>
+  </p>
+  <p>surname: 
+   <%= student.surname %>
+  </p>
+  <p>age: 
    <%= student.age %>
   </p>
  <% }) %>

@@ -8,13 +8,13 @@ const jsonServer = require('json-server');
 // const JSONdatabase = require('./students.json');
 
 const fs = require("fs");
-const { json } = require('express');
+// const { json } = require('express');
 
 app.set('view engine', 'ejs');
 app.listen(3000, () => console.log("lytter på port 3000"));
 app.use(express.static('public'));
 app.use(express.json({limit: '1mb'}));
-app.use(express.urlencoded());
+// app.use(express.urlencoded());
 
 // Denne post API kører kun 1 gang når index loaded:
 app.post('/api', (req, res) => {
@@ -89,7 +89,9 @@ app.post('/formPost', (req, res) => {
   const newStudent = {
    // id: student.id,
    id: newID,
-   name: student.name,
+   firstname: student.firstname,
+   middlename: student.middlename,
+   surname: student.surname,
    age: student.age
   };
 
