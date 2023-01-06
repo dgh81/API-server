@@ -11,10 +11,16 @@ const fs = require("fs");
 // const { json } = require('express');
 
 app.set('view engine', 'ejs');
+
+// app.use(bodyParser.urlencoded({ extended: true }));
+
 app.listen(3000, () => console.log("lytter på port 3000"));
 app.use(express.static('public'));
 app.use(express.json({limit: '1mb'}));
-// app.use(express.urlencoded());
+app.use(express.urlencoded());
+
+
+// RENAME ALT DER HEDDER API !?!?!?--------------------------------------------------------------------
 
 // Denne post API kører kun 1 gang når index loaded:
 app.post('/api', (req, res) => {
@@ -59,61 +65,82 @@ app.get('/form', (req, res) => {
  res.render('form', {title: 'form'});
 });
 
-app.post('/formPost', (req, res) => {
+app.get('/getStudent', (req, res) => {
+ res.render('getStudent', {title: 'getStudent'});
+});
 
- console.log("I got a request from /formPost!!"); 
-
-
-
- // Students er allerede parsed af Readeren. Students er et javascript objekt:
- jsonReader("./students.json", (err, students) => {
+app.post('/showStudent', (req, res) => {
+ console.log("ID:", req.body.id);
+ jsonReader("./students.json", (err, jsonData) => {
   
   if (err) {
-    console.log(err);
+    console.log("error", err);
     return;
   };
 
-  // Tilgå variable/properties i javascript objektet:
-  console.log("students.students[0].age",students.students[0].age);
-  console.log("antal", students.students.length);
+  jsonData.students.forEach(student => {
+   if (student.id == req.body.id) {
+    console.log(student);
+    // console.log(jsonData);
+    res.render('showStudent', {foundStudent: student});
+   }
+  })
 
-  // Sæt nyt ID til næste ID i rækken:
-  let newID = students.students.length
+ // res.render('myapi', {studentsData: jsonData.students});
+});
 
-  // Byg ny student:
-  // Brug req.body hvis alle felter i form repræsenterer objektet der skal gemmes:
-  const student = req.body;
-
-  // Brug specifikke navngivne felter fra form, som repræsenterer objektet der skal gemmes:
-  // Det er muligt at redigere, slette, tilføje felter her. Fx er ID beregnet her og ikke sat i et form-felt:
-  const newStudent = {
-   // id: student.id,
-   id: newID,
-   firstname: student.firstname,
-   middlename: student.middlename,
-   surname: student.surname,
-   age: student.age
-  };
-
-  // Vis students objektet i frontend konsollen:
-  res.json({
-   students
-  });
-  
-  // Tilføj newStudent til students:
-  students['students'].push(newStudent);
-
-  // Konverter javascript objekt tilbage til json string inden der skrives til json filen:
-  let jsonStringStudents = JSON.stringify(students, null, 2);
-
-  console.log("my jsonStringStudents:", jsonStringStudents);
-
-  jsonWriter('./students.json', jsonStringStudents);
-
- });
 });
 
 
+//TODO: pt gemmes student ikke. Måske bare kald på formPost herunder?
+app.post('/createStudentStatus', (req, res) => {
+ if (err) {
+   console.log(err);
+   return;
+ };
+
+ if (req.body.firstname != "" && req.body.age != "") {
+  
+  res.render('createStudentStatus', {studentStatus: 'succes!'});
+  // Students er allerede parsed af Readeren. Students er et javascript objekt:
+  jsonReader("./students.json", (err, students) => {
+  
+   // Tilgå variable/properties i javascript objektet:
+   console.log("students.students[0].age",students.students[0].age);
+   console.log("antal", students.students.length);
+
+   // Sæt nyt ID til næste ID i rækken:
+   let newID = students.students.length
+
+   // Byg ny student:
+   // Brug req.body hvis alle felter i form repræsenterer objektet der skal gemmes:
+   const student = req.body;
+
+   // Brug specifikke navngivne felter fra form, som repræsenterer objektet der skal gemmes:
+   // Det er muligt at redigere, slette, tilføje felter her. Fx er ID beregnet her og ikke sat i et form-felt:
+   console.log("student.age",student.age);
+   const newStudent = {
+    // id: student.id,
+    id: newID,
+    age: student.age,
+    names: [{firstname: student.firstname, middlename: student.middlename, surname: student.surname}]
+   };
+   
+   // Tilføj newStudent til students:
+   students['students'].push(newStudent);
+
+   // Konverter javascript objekt tilbage til json string inden der skrives til json filen:
+   let jsonStringStudents = JSON.stringify(students, null, 2);
+   // console.log("my jsonStringStudents:", jsonStringStudents);
+   jsonWriter('./students.json', jsonStringStudents);
+
+  });
+
+ } else {
+ res.render('createStudentStatus', {studentStatus: 'failed!'});
+}
+
+});
  
  // --------------------------------FS READ / WRITE JSON ----------------------------
  //Læs fra json fil:

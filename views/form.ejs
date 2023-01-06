@@ -9,7 +9,7 @@
 <body>
 
  <!-- <form action="/some page" id="form" method="post"> -->
-  <form id="myForm">  
+  <form id="myForm" action="http://localhost:3000/createStudentStatus" method="POST">  
    <!-- <label>Id:<input id="id" name="id" value="2"></label> -->
    <label>First name:<input id="firstname" name="firstname" value="John"></label>
    <label>Middle name:<input id="middlename" name="middlename" value="Doe"></label>
@@ -20,32 +20,32 @@
  </form>
  <script>
 
-document.getElementById("myForm").addEventListener("submit", function (e) {
-  e.preventDefault();
-  // getData(e.target);
-  postData(e.target).then();
-});
+// document.getElementById("myForm").addEventListener("submit", function (e) {
+//   e.preventDefault();
+//   // getData(e.target);
+//   postData(e.target).then();
+// });
 
- async function postData(form) {
-  var formData = new FormData(form);
-  console.log("running postData");
+//  async function postData(form) {
+//   var formData = new FormData(form);
+//   console.log("running postData");
 
-  const data = Object.fromEntries(formData);
+//   const data = Object.fromEntries(formData);
 
-  const options = {
-   method: 'POST',
-   headers: {
-      'Content-Type': 'application/json'
-    },
-   body: JSON.stringify(data)
-  };
+//   const options = {
+//    method: 'POST',
+//    headers: {
+//       'Content-Type': 'application/json'
+//     },
+//    body: JSON.stringify(data)
+//   };
   
-  // POST form data til frontend-konsollen på siden /form;
-  const res = await fetch('formPost', options);
-  const dataResponse = await res.json();
+//   // POST form data til frontend-konsollen på siden /form;
+//   const res = await fetch('formPost', options);
+//   const dataResponse = await res.json();
   
-  console.log("dataResponse: ", dataResponse);
- };
+//   console.log("dataResponse: ", dataResponse);
+//  };
 
 </script>
 </body>

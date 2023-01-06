@@ -8,37 +8,20 @@
  <meta charset="UTF-8">
  <meta http-equiv="X-UA-Compatible" content="IE=edge">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <!-- <script src="../public/apiResponse.js" id="data" type="application/json"></script> -->
 
- <!-- Omdøb alt heri til "Vis alle" -->
  <title>Document</title>
 </head>
 <body>
- <h1>API</h1>
+ <h1>Show student</h1>
  <div id="students"></div>
 
- <dl>
- <% studentsData.forEach(student => { %>
-  <dt>
-   id: 
-   <%= student.id %>
-  </dt>
-  <dd>
-   firstname: <%= student.names[0].firstname %>
-  </dd>
-  <dd>
-   middlename: <%= student.names[0].middlename %>
-  </dd>
-  <dd>
-   surname: <%= student.names[0].surname %>
-  </dd>
-  <dd>
-   age: <%= student.age %>
-  </dd>
-  
-  
- <% }) %>
-</dl>
-
+ <%= foundStudent.id %>
+ <%= foundStudent.age %>
+ <%= foundStudent.names[0].firstname %>
+ <%= foundStudent.names[0].middlename %>
+ <%= foundStudent.names[0].surname %>
+ 
 </body>
 <!-- <script src="apiResponse.js"></script> -->
 </html>

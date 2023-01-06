@@ -2,17 +2,47 @@
   "students": [
     {
       "id": 0,
-      "firstname": "John",
-      "middlename": "Doe",
-      "surname": "Rockefeller",
-      "age": "22"
+      "age": "22",
+      "names": [
+        {
+          "firstname": "John",
+          "middlename": "Doe",
+          "surname": "Rockefeller"
+        }
+      ]
     },
     {
       "id": 1,
-      "firstname": "daniel",
-      "middlename": "guldberg",
-      "surname": "hansen",
-      "age": "41"
+      "age": "41",
+      "names": [
+        {
+          "firstname": "DANIEL",
+          "middlename": "GULDBERG",
+          "surname": "HANSEN"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "age": "41",
+      "names": [
+        {
+          "firstname": "DANIEL",
+          "middlename": "GULDBERG",
+          "surname": "HANSEN"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "age": "22",
+      "names": [
+        {
+          "firstname": "John",
+          "middlename": "Doe",
+          "surname": "Rockefeller"
+        }
+      ]
     }
   ]
 }
