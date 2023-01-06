@@ -4,12 +4,12 @@
 // (Express er middleware - Middleware er ret tydeligt i get og post funktionerne.
 //  (req, res) - ("forespørgsel" vs "svar") - ("client" vs "server")... det er tydeligt af get og post at
 //  app.get og app.post er hvad der sker mellem server og client)...
+const fs = require("fs");
 const express = require('express');
 const app = express();
-const fs = require("fs");
+
 app.set('view engine', 'ejs');
 app.listen(3000, () => console.log("lytter på port 3000"));
-
 app.use(express.static('public'));
 app.use(express.urlencoded());
 // -------------------------------------------------------- //
@@ -36,6 +36,8 @@ app.post('/deleteStudentStatus', (req, res) => {
     return;
   };
 
+  //TODO: refac funktion? Ja - bør tjekke: er array null, 1 værdier, flere værdier eller alle værdier..
+  // kan derefter genbruges i nye funktioner som sletFlere, sletAlle, etc...
  for (let i = 0; i < jsonData.students.length; i++) {
   if (jsonData.students[i].id == id) {
    jsonData.students.splice(i,1);
@@ -59,7 +61,6 @@ app.get('/showAllStudents', (req, res) => {
     console.log("error", err);
     return;
   };
-  // console.log("students.students[0].age",jsonData.students[0].age);
  res.render('showAllStudents', {studentsData: jsonData.students, title: 'Vis Alle'});
  });
 });
@@ -94,7 +95,6 @@ app.post('/showStudent', (req, res) => {
 app.post('/createStudentStatus', (req, res) => {
  if (req.body.firstname != "" && req.body.age != "" && req.body.id != "") {
   res.render('createStudentStatus', {studentStatus: 'succes!', title: 'Status'});
-  // Students er allerede parsed af Readeren. Students er et javascript objekt:
   jsonReader("./students.json", (err, students) => {
    // TODO: Er det her nødvendigt?:
    if (err) {
@@ -126,9 +126,10 @@ app.post('/createStudentStatus', (req, res) => {
 
 
 // ---------------- FS READ / WRITE JSON ------------------ //
- //Læs fra json fil (cb = callback
- //i det her tilfælde er cb en (err og et object)
- //jsonReader("./students.json", (err, students) => {"
+ //Læs fra json fil (cb = callback)
+ // i det her tilfælde er cb en (err og et object)
+ // jsonReader("./students.json", (err, students) => {"
+ //Readeren returnerer et javascript objekt
  function jsonReader(filePath, cb) {
   fs.readFile(filePath, (err, fileData) => {
     if (err) {
