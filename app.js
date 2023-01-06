@@ -37,9 +37,23 @@ app.get('/', (req, res) => {
  res.render('index', {title: 'Forside'});
 });
 
+
 app.get('/myapi', (req, res) => {
- res.render('myapi', {title: 'myapi'});
+  jsonReader("./students.json", (err, jsonData) => {
+  
+  if (err) {
+    console.log("error", err);
+    return;
+  };
+  console.log("students.students[0].age",jsonData.students[0].age);
+  console.log("antal", jsonData.students.length);
+  console.log(jsonData);
+ res.render('myapi', {studentsData: jsonData.students});
+
+ });
+
 });
+
 
 app.get('/form', (req, res) => {
  res.render('form', {title: 'form'});
@@ -88,62 +102,40 @@ app.post('/formPost', (req, res) => {
   students['students'].push(newStudent);
 
   // Konverter javascript objekt tilbage til json string inden der skrives til json filen:
-  let jsonStringStudents = JSON.stringify(students);
+  let jsonStringStudents = JSON.stringify(students, null, 2);
 
   console.log("my jsonStringStudents:", jsonStringStudents);
 
-  fs.writeFile('./students.json', jsonStringStudents, err => {
-   if (err) {
-       console.log('Error writing file', err);
-   } else {
-       console.log('Successfully wrote file');
-   };
-  });
+  jsonWriter('./students.json', jsonStringStudents);
 
  });
-
 });
 
-// Denne bliver autoprintet i frontend-konsollen på siden /form:
-// HUSK at man ikke kan have 2 res.json i samme "loop" - derfor er denne udkommenteret (se linje 82):
-// res.json({
-//  status: "success",
-//  id: newStudent.id,
-//  name: newStudent.name,
-//  age: newStudent.age
-// });
 
-function jsonReader(filePath, cb) {
- fs.readFile(filePath, (err, fileData) => {
-   if (err) {
-     return cb && cb(err);
-   }
-   try {
-     const object = JSON.parse(fileData);
-     return cb && cb(null, object);
-   } catch (err) {
-     return cb && cb(err);
-   }
- });
-};
  
  // --------------------------------FS READ / WRITE JSON ----------------------------
+ //Læs fra json fil:
+ function jsonReader(filePath, cb) {
+  fs.readFile(filePath, (err, fileData) => {
+    if (err) {
+      return cb && cb(err);
+    };
+    try {
+      const object = JSON.parse(fileData);
+      return cb && cb(null, object);
+    } catch (err) {
+      return cb && cb(err);
+    };
+  });
+ };
  // Skriv til json-fil:
- // fs.writeFile('./newStudent.json', jsonString, err => {
- //  if (err) {
- //      console.log('Error writing file', err);
- //  } else {
- //      console.log('Successfully wrote file');
- //  };
-
-//Læs fra json-fil:
-
-// jsonReader("./db.json", (err, students) => {
-//  if (err) {
-//    console.log(err);
-//    return;
-//  };
-//  console.log("test");
-//  console.log(students);
-// });
+ function jsonWriter(jsonFilepath, jsonString) {
+ fs.writeFile(jsonFilepath, jsonString, err => {
+  if (err) {
+      console.log('Error writing file', err);
+  } else {
+      console.log('Successfully wrote file');
+  };
+ });
+};
 // ---------------------------------------------------------------------------------

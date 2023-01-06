@@ -15,8 +15,19 @@
 <body>
  <h1>API</h1>
  <div id="students"></div>
- 
+
+ <% studentsData.forEach(student => { %>
+  <p>
+   <%= student.id %>
+  </p>
+  <p>
+   <%= student.name %>
+  </p>
+  <p>
+   <%= student.age %>
+  </p>
+ <% }) %>
 
 </body>
-<script src="apiResponse.js"></script>
+<!-- <script src="apiResponse.js"></script> -->
 </html>
