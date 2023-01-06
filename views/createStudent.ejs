@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title><%=title%></title>
+</head>
+<body>
+ <%- include('nav.ejs') %>
+<h1>Opret Student</h1>
+
+  <form id="createStudentForm" action="http://localhost:3000/createStudentStatus" method="POST">  
+
+   <label>First name:<input id="firstname" name="firstname" value="John"></label>
+   <label>Middle name:<input id="middlename" name="middlename" value="Doe"></label>
+   <label>Surname:<input id="surname" name="surname" value="Rockefeller"></label>
+   <label>Age:<input id="age" name="age" value="22"></label>
+
+   <input type="submit" value="Submit">
+ </form>
+
+</body>
+
+
+
+</html>

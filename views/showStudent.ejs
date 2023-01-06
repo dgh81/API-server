@@ -10,18 +10,17 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <!-- <script src="../public/apiResponse.js" id="data" type="application/json"></script> -->
 
- <title>Document</title>
+ <title><%=title%></title>
 </head>
 <body>
+ <%- include('nav.ejs') %>
  <h1>Show student</h1>
- <div id="students"></div>
-
  <%= foundStudent.id %>
  <%= foundStudent.age %>
  <%= foundStudent.names[0].firstname %>
  <%= foundStudent.names[0].middlename %>
  <%= foundStudent.names[0].surname %>
- 
+
 </body>
 <!-- <script src="apiResponse.js"></script> -->
 </html>

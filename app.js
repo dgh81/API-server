@@ -44,7 +44,7 @@ app.get('/', (req, res) => {
 });
 
 
-app.get('/myapi', (req, res) => {
+app.get('/showAllStudents', (req, res) => {
   jsonReader("./students.json", (err, jsonData) => {
   
   if (err) {
@@ -54,19 +54,19 @@ app.get('/myapi', (req, res) => {
   console.log("students.students[0].age",jsonData.students[0].age);
   console.log("antal", jsonData.students.length);
   console.log(jsonData);
- res.render('myapi', {studentsData: jsonData.students});
+ res.render('showAllStudents', {studentsData: jsonData.students, title: 'Vis Alle'});
 
  });
 
 });
 
 
-app.get('/form', (req, res) => {
- res.render('form', {title: 'form'});
+app.get('/createStudent', (req, res) => {
+ res.render('createStudent', {title: 'Create Student'});
 });
 
 app.get('/getStudent', (req, res) => {
- res.render('getStudent', {title: 'getStudent'});
+ res.render('getStudent', {title: 'Find Student'});
 });
 
 app.post('/showStudent', (req, res) => {
@@ -81,63 +81,40 @@ app.post('/showStudent', (req, res) => {
   jsonData.students.forEach(student => {
    if (student.id == req.body.id) {
     console.log(student);
-    // console.log(jsonData);
-    res.render('showStudent', {foundStudent: student});
+    res.render('showStudent', {foundStudent: student, title: 'Vis Student'});
    }
-  })
-
- // res.render('myapi', {studentsData: jsonData.students});
+  });
 });
 
 });
 
-
-//TODO: pt gemmes student ikke. Måske bare kald på formPost herunder?
 app.post('/createStudentStatus', (req, res) => {
- if (err) {
-   console.log(err);
-   return;
- };
-
  if (req.body.firstname != "" && req.body.age != "") {
-  
-  res.render('createStudentStatus', {studentStatus: 'succes!'});
+  res.render('createStudentStatus', {studentStatus: 'succes!', title: 'Status'});
   // Students er allerede parsed af Readeren. Students er et javascript objekt:
   jsonReader("./students.json", (err, students) => {
-  
-   // Tilgå variable/properties i javascript objektet:
-   console.log("students.students[0].age",students.students[0].age);
-   console.log("antal", students.students.length);
-
    // Sæt nyt ID til næste ID i rækken:
    let newID = students.students.length
-
    // Byg ny student:
    // Brug req.body hvis alle felter i form repræsenterer objektet der skal gemmes:
    const student = req.body;
-
    // Brug specifikke navngivne felter fra form, som repræsenterer objektet der skal gemmes:
    // Det er muligt at redigere, slette, tilføje felter her. Fx er ID beregnet her og ikke sat i et form-felt:
-   console.log("student.age",student.age);
    const newStudent = {
-    // id: student.id,
     id: newID,
     age: student.age,
     names: [{firstname: student.firstname, middlename: student.middlename, surname: student.surname}]
    };
-   
    // Tilføj newStudent til students:
    students['students'].push(newStudent);
-
    // Konverter javascript objekt tilbage til json string inden der skrives til json filen:
    let jsonStringStudents = JSON.stringify(students, null, 2);
    // console.log("my jsonStringStudents:", jsonStringStudents);
    jsonWriter('./students.json', jsonStringStudents);
-
   });
 
  } else {
- res.render('createStudentStatus', {studentStatus: 'failed!'});
+ res.render('createStudentStatus', {studentStatus: 'failed!', title: 'Status'});
 }
 
 });
