@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <!-- <script src="../public/apiResponse.js" id="data" type="application/json"></script> -->
+
+ <title><%=title%></title>
+</head>
+<body>
+ <%- include('nav.ejs') %>
+ <h1>Slet Student</h1>
+ <form id="deleteStudentIDForm" action="http://localhost:3000/deleteStudentStatus" method="POST">
+  <input id="id" name="id">
+  <input type="submit" value="Submit">
+ </form>
+
+</body>
+
+</html>
