@@ -18,13 +18,16 @@ Hvis json server ikke starter på korrekt port, skal der manuelt oprettes en "js
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <!-- <script src="../public/apiResponse.js" id="data" type="application/json"></script> -->
 
- <title>Document</title>
+ <title><%=title%></title>
 </head>
 <body>
- <h1>API</h1>
- <div id="students"></div>
- 
+ <%- include('nav.ejs') %>
+ <h1>Student finder</h1>
+ <form id="getStudentIDForm" action="http://localhost:3000/showStudent" method="POST">
+  <input id="id" name="id">
+  <input type="submit" value="Submit">
+ </form>
 
 </body>
-<script src="apiResponse.js"></script>
+
 </html>

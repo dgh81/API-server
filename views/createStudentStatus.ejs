@@ -6,8 +6,9 @@
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <title><%=title%></title>
 </head>
+<%- include('nav.ejs') %>
+<h1>Status</h1>
 <body>
- <%- include('nav.ejs') %>
- <h1>Forside</h1>
+ status: <%= studentStatus %>
 </body>
 </html>

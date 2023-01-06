@@ -1,0 +1,26 @@
+<!-- // terminal: npm i json-server (lokalt)-->
+<!-- // terminal: npm i -g json-server (globalt)-->
+<!-- // terminal: json-server db.json (hvis installeret globalt)--> 
+<!-- // terminal: npx json-server db.json --portnummer (hvis installeret lokalt)--> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <!-- <script src="../public/apiResponse.js" id="data" type="application/json"></script> -->
+
+ <title><%=title%></title>
+</head>
+<body>
+ <%- include('nav.ejs') %>
+ <h1>Show student</h1>
+ <%= foundStudent.id %>
+ <%= foundStudent.age %>
+ <%= foundStudent.names[0].firstname %>
+ <%= foundStudent.names[0].middlename %>
+ <%= foundStudent.names[0].surname %>
+
+</body>
+<!-- <script src="apiResponse.js"></script> -->
+</html>
