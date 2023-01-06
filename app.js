@@ -19,26 +19,6 @@ app.use(express.static('public'));
 app.use(express.json({limit: '1mb'}));
 app.use(express.urlencoded());
 
-
-// RENAME ALT DER HEDDER API !?!?!?--------------------------------------------------------------------
-
-// Denne post API kører kun 1 gang når index loaded:
-app.post('/api', (req, res) => {
- // Print til server konsol:
- console.log("I got a request!!"); 
- console.log("req", req.body);
- 
- const data = req.body;
-
- // Denne bliver autoprintet i frontend-konsollen på siden /index: 
- res.json({
-  status: "success",
-  name: data.name,
-  age: data.age
- });
-
-});
-
 app.get('/', (req, res) => {
  res.render('index', {title: 'Forside'});
 });
@@ -57,17 +37,10 @@ app.post('/deleteStudentStatus', (req, res) => {
     return;
   };
 
-
- let newStudentList;
- console.log("jsonData.students",jsonData.students)
+ // console.log("jsonData.students",jsonData.students);
  for (let i = 0; i < jsonData.students.length; i++) {
   if (jsonData.students[i].id == id) {
-   console.log("jsonData", jsonData);
-   newStudentList = jsonData.students;
-   console.log("old newStudentList", newStudentList);
    jsonData.students.splice(i,1);
-   console.log("jsonData", jsonData);
-   // console.log("newStudentList", newStudentList);
    break;
   };
  };
@@ -76,7 +49,7 @@ app.post('/deleteStudentStatus', (req, res) => {
  console.log("jsonStringStudents", jsonStringStudents);
  jsonWriter('./students.json', jsonStringStudents);
 
- res.render('deleteStudentStatus', {studentsData: jsonData.students, title: 'Status', status: "Student successfully deleted"});
+ res.render('deleteStudentStatus', {title: 'Status', status: "Student successfully deleted"});
 
  });
 
@@ -127,7 +100,7 @@ app.post('/showStudent', (req, res) => {
 });
 
 app.post('/createStudentStatus', (req, res) => {
- if (req.body.firstname != "" && req.body.age != "") {
+ if (req.body.firstname != "" && req.body.age != "" && req.body.id != "") {
   res.render('createStudentStatus', {studentStatus: 'succes!', title: 'Status'});
   // Students er allerede parsed af Readeren. Students er et javascript objekt:
   jsonReader("./students.json", (err, students) => {
