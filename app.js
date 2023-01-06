@@ -43,6 +43,44 @@ app.get('/', (req, res) => {
  res.render('index', {title: 'Forside'});
 });
 
+app.get('/deleteStudent', (req, res) => {
+ res.render('deleteStudent', {title: 'Slet Student'});
+});
+
+app.post('/deleteStudentStatus', (req, res) => {
+ let id = req.body.id;
+
+ jsonReader("./students.json", (err, jsonData) => {
+  
+  if (err) {
+    console.log("error", err);
+    return;
+  };
+
+
+ let newStudentList;
+ console.log("jsonData.students",jsonData.students)
+ for (let i = 0; i < jsonData.students.length; i++) {
+  if (jsonData.students[i].id == id) {
+   console.log("jsonData", jsonData);
+   newStudentList = jsonData.students;
+   console.log("old newStudentList", newStudentList);
+   jsonData.students.splice(i,1);
+   console.log("jsonData", jsonData);
+   // console.log("newStudentList", newStudentList);
+   break;
+  };
+ };
+
+ let jsonStringStudents = JSON.stringify(jsonData, null, 2);
+ console.log("jsonStringStudents", jsonStringStudents);
+ jsonWriter('./students.json', jsonStringStudents);
+
+ res.render('deleteStudentStatus', {studentsData: jsonData.students, title: 'Status', status: "Student successfully deleted"});
+
+ });
+
+});
 
 app.get('/showAllStudents', (req, res) => {
   jsonReader("./students.json", (err, jsonData) => {
@@ -93,15 +131,19 @@ app.post('/createStudentStatus', (req, res) => {
   res.render('createStudentStatus', {studentStatus: 'succes!', title: 'Status'});
   // Students er allerede parsed af Readeren. Students er et javascript objekt:
   jsonReader("./students.json", (err, students) => {
+   if (err) {
+    console.log("error", err);
+    return;
+   };
    // Sæt nyt ID til næste ID i rækken:
-   let newID = students.students.length
+   // let newID = students.students.length
    // Byg ny student:
    // Brug req.body hvis alle felter i form repræsenterer objektet der skal gemmes:
    const student = req.body;
    // Brug specifikke navngivne felter fra form, som repræsenterer objektet der skal gemmes:
    // Det er muligt at redigere, slette, tilføje felter her. Fx er ID beregnet her og ikke sat i et form-felt:
    const newStudent = {
-    id: newID,
+    id: student.id,
     age: student.age,
     names: [{firstname: student.firstname, middlename: student.middlename, surname: student.surname}]
    };
