@@ -1,24 +1,23 @@
-// https://www.youtube.com/watch?v=Kw5tC5nQMRY&ab_channel=TheCodingTrain
 
-// Husk at starte app og db.json på forskellige porte...
+
+// ------------------------ Setup ------------------------ //
+// (Express er middleware - Middleware er ret tydeligt i get og post funktionerne.
+//  (req, res) - ("forespørgsel" vs "svar") - ("client" vs "server")... det er tydeligt af get og post at
+//  app.get og app.post er hvad der sker mellem server og client)...
 const express = require('express');
 const app = express();
-
-const jsonServer = require('json-server');
-// const JSONdatabase = require('./students.json');
-
 const fs = require("fs");
-// const { json } = require('express');
-
 app.set('view engine', 'ejs');
-
-// app.use(bodyParser.urlencoded({ extended: true }));
-
 app.listen(3000, () => console.log("lytter på port 3000"));
-app.use(express.static('public'));
-app.use(express.json({limit: '1mb'}));
-app.use(express.urlencoded());
 
+app.use(express.static('public'));
+app.use(express.urlencoded());
+// -------------------------------------------------------- //
+
+
+
+
+// ----------------------- Routing ------------------------ //
 app.get('/', (req, res) => {
  res.render('index', {title: 'Forside'});
 });
@@ -37,7 +36,6 @@ app.post('/deleteStudentStatus', (req, res) => {
     return;
   };
 
- // console.log("jsonData.students",jsonData.students);
  for (let i = 0; i < jsonData.students.length; i++) {
   if (jsonData.students[i].id == id) {
    jsonData.students.splice(i,1);
@@ -52,7 +50,6 @@ app.post('/deleteStudentStatus', (req, res) => {
  res.render('deleteStudentStatus', {title: 'Status', status: "Student successfully deleted"});
 
  });
-
 });
 
 app.get('/showAllStudents', (req, res) => {
@@ -62,15 +59,10 @@ app.get('/showAllStudents', (req, res) => {
     console.log("error", err);
     return;
   };
-  console.log("students.students[0].age",jsonData.students[0].age);
-  console.log("antal", jsonData.students.length);
-  console.log(jsonData);
+  // console.log("students.students[0].age",jsonData.students[0].age);
  res.render('showAllStudents', {studentsData: jsonData.students, title: 'Vis Alle'});
-
  });
-
 });
-
 
 app.get('/createStudent', (req, res) => {
  res.render('createStudent', {title: 'Create Student'});
@@ -95,8 +87,8 @@ app.post('/showStudent', (req, res) => {
     res.render('showStudent', {foundStudent: student, title: 'Vis Student'});
    }
   });
-});
 
+ });
 });
 
 app.post('/createStudentStatus', (req, res) => {
@@ -104,17 +96,14 @@ app.post('/createStudentStatus', (req, res) => {
   res.render('createStudentStatus', {studentStatus: 'succes!', title: 'Status'});
   // Students er allerede parsed af Readeren. Students er et javascript objekt:
   jsonReader("./students.json", (err, students) => {
+   // TODO: Er det her nødvendigt?:
    if (err) {
     console.log("error", err);
     return;
    };
-   // Sæt nyt ID til næste ID i rækken:
-   // let newID = students.students.length
-   // Byg ny student:
-   // Brug req.body hvis alle felter i form repræsenterer objektet der skal gemmes:
+
    const student = req.body;
    // Brug specifikke navngivne felter fra form, som repræsenterer objektet der skal gemmes:
-   // Det er muligt at redigere, slette, tilføje felter her. Fx er ID beregnet her og ikke sat i et form-felt:
    const newStudent = {
     id: student.id,
     age: student.age,
@@ -124,7 +113,6 @@ app.post('/createStudentStatus', (req, res) => {
    students['students'].push(newStudent);
    // Konverter javascript objekt tilbage til json string inden der skrives til json filen:
    let jsonStringStudents = JSON.stringify(students, null, 2);
-   // console.log("my jsonStringStudents:", jsonStringStudents);
    jsonWriter('./students.json', jsonStringStudents);
   });
 
@@ -133,9 +121,14 @@ app.post('/createStudentStatus', (req, res) => {
 }
 
 });
+// -------------------------------------------------------- //
  
- // --------------------------------FS READ / WRITE JSON ----------------------------
- //Læs fra json fil:
+
+
+// ---------------- FS READ / WRITE JSON ------------------ //
+ //Læs fra json fil (cb = callback
+ //i det her tilfælde er cb en (err og et object)
+ //jsonReader("./students.json", (err, students) => {"
  function jsonReader(filePath, cb) {
   fs.readFile(filePath, (err, fileData) => {
     if (err) {
@@ -159,4 +152,4 @@ app.post('/createStudentStatus', (req, res) => {
   };
  });
 };
-// ---------------------------------------------------------------------------------
+// -------------------------------------------------------- //
