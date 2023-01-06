@@ -9,8 +9,8 @@ const app = express();
 const fs = require("fs");
 app.set('view engine', 'ejs');
 app.listen(3000, () => console.log("lytter på port 3000"));
+
 app.use(express.static('public'));
-app.use(express.json({limit: '1mb'}));
 app.use(express.urlencoded());
 // -------------------------------------------------------- //
 
