@@ -1,4 +1,4 @@
-
+//TIP CTRL+G goto line number.
 
 // ------------------------ Setup ------------------------ //
 // (Express er middleware - Middleware er ret tydeligt i get og post funktionerne.
@@ -96,7 +96,7 @@ app.post('/createStudentStatus', (req, res) => {
  if (req.body.firstname != "" && req.body.age != "" && req.body.id != "") {
   res.render('createStudentStatus', {studentStatus: 'succes!', title: 'Status'});
   jsonReader("./students.json", (err, students) => {
-   // TODO: Er det her nødvendigt?:
+
    if (err) {
     console.log("error", err);
     return;
@@ -123,23 +123,40 @@ app.post('/createStudentStatus', (req, res) => {
 });
 // -------------------------------------------------------- //
  
-
+function jsonReader2(filePath, cb) {
+    fs.readFile(filePath).then(() => {
+        const object = JSON.parse(fileData);
+      //   console.log("cb", cb);
+        // return cb && cb(null, object);
+        return cb(null, object);
+    }).catch(() => {
+        return cb(err);
+    });
+}
 
 // ---------------- FS READ / WRITE JSON ------------------ //
  //Læs fra json fil (cb = callback)
  // i det her tilfælde er cb en (err og et object)
  // jsonReader("./students.json", (err, students) => {"
+
  //Readeren returnerer et javascript objekt
+
+ //PS! readFile er den asynkrone version. Der findes også en readFileSync.
+ // readFile tager et callback som 2. argument, hvilket kaldes på, når filen er læst.
+ // se evt. screentip for readFile herunder, og CTRL click readFile for at se hvordan den bruger Promise
+ // (og evt. hvordan readFileSync ikke gør...):
  function jsonReader(filePath, cb) {
   fs.readFile(filePath, (err, fileData) => {
     if (err) {
-      return cb && cb(err);
+      return cb(err);
     };
     try {
       const object = JSON.parse(fileData);
-      return cb && cb(null, object);
+    //   console.log("cb", cb);
+    //   return cb && cb(null, object);
+      return cb(null, object);
     } catch (err) {
-      return cb && cb(err);
+      return cb(err);
     };
   });
  };

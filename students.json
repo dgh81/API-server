@@ -32,6 +32,17 @@
           "surname": "Rockefeller"
         }
       ]
+    },
+    {
+      "id": "f12",
+      "age": "52",
+      "names": [
+        {
+          "firstname": "Jakob",
+          "middlename": "Bøjsen",
+          "surname": "Jensen"
+        }
+      ]
     }
   ]
 }
